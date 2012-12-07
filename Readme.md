@@ -55,19 +55,21 @@ This SDK use apache.http lib and json lib.
 
 * a sample about multipart http post message
 
-		`--0soLYaK4lNBytrh912fNS15mSORsgy_J`<br />
-		`Content-Disposition: form-data; name="`<font color="red">person\_name</font>`"`<br />
-		`Content-Type: text/plain; charset=US-ASCII`<br />
-		`Content-Transfer-Encoding: 8bit`
-		<br /><br />
-		<font color="red">my\_person\_name</font><br />
-		`--0soLYaK4lNBytrh912fNS15mSORsgy_J`<br />
-		`Content-Disposition: form-data; name="`<font color="red">group\_name</font>`"`<br />
-		`Content-Type: text/plain; charset=US-ASCII`<br />
-		`Content-Transfer-Encoding: 8bit`
-		<br /><br />
-		<font color="red">my\_group\_name</font><br />
-		`--0soLYaK4lNBytrh912fNS15mSORsgy_J--`
+		--0soLYaK4lNBytrh912fNS15mSORsgy_J
+		Content-Disposition: form-data; name="PERSON_NAME"
+		Content-Type: text/plain; charset=US-ASCII
+		Content-Transfer-Encoding: 8bit
+		
+		
+		MY_PERSON_NAME
+		--0soLYaK4lNBytrh912fNS15mSORsgy_J
+		Content-Disposition: form-data; name="GROUP_NAME"
+		Content-Type: text/plain; charset=US-ASCII
+		Content-Transfer-Encoding: 8bit
+		
+		
+		MY_GROUP_NAME
+		--0soLYaK4lNBytrh912fNS15mSORsgy_J--
 
 
 ## 6. For Android
