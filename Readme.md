@@ -1,6 +1,6 @@
 # FacePlusPlus Java SDK
 
-This SDK use apache.http lib and json lib.
+This SDK uses apache.http lib and json lib.
 
 ## 1. Install
 1. download [facepp.jar](http://faceplusplus.com/static/sdk/java/facepp.jar);
