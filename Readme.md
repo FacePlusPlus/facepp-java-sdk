@@ -42,7 +42,7 @@ This SDK uses apache.http lib and json lib.
 
 	`result.get("face").get(0).get("face_id").toString()`
 
-	`result.get("face").get(0).get("").toString("attribute").get("gender").get("confidence").toDouble()`
+	`result.get("face").get(0).get("attribute").get("gender").get("confidence").toDouble()`
 
 ## 5. Debug
 1. View the post request
