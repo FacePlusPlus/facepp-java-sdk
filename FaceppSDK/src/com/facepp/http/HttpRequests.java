@@ -21,11 +21,11 @@ import com.facepp.result.FaceppResult;
  * {@code new HttpRequests(apiKey, apiSecret).train()}
  * @author moon5ckq
  * @since 1.0.0
- * @version 1.1.0
+ * @version 1.2.0
  */
 public class HttpRequests {
 	
-	static final private String WEBSITE = "http://api.faceplusplus.com/";
+	static private String WEBSITE = "https://api.faceplusplus.com/";
 	static final private int BUFFERSIZE = 1048576;
 	static final private int TIMEOUT = 30000;
 	static final private int TRAINTIMEOUT = 60000;
@@ -272,7 +272,8 @@ public class HttpRequests {
 	
 	/**
 	 * create {@link HttpRequests} <br />
-	 * api_key=...,api_secret=...
+	 * api_key=...,api_secret=... <br />
+	 * use https default
 	 * @param apiKey
 	 * @param apiSecret
 	 */
@@ -283,10 +284,34 @@ public class HttpRequests {
 	}
 
 	/**
+	 * use https default
 	 * create a empty {@link HttpRequests} object
 	 */
 	public HttpRequests() {
 		super();
+	}
+	
+	/**
+	 * create {@link HttpRequests} <br />
+	 * api_key=...,api_secret=...<br />
+	 * if debug is `true', use http instead of https
+	 * @param apiKey
+	 * @param apiSecret
+	 */
+	public HttpRequests(String apiKey, String apiSecret, boolean debug) {
+		super();
+		this.apiKey = apiKey;
+		this.apiSecret = apiSecret;
+		if (debug) WEBSITE = "http://api.faceplusplus.com/";
+	}
+
+	/**
+	 * if debug is `true', use http instead of https
+	 * create a empty {@link HttpRequests} object
+	 */
+	public HttpRequests(boolean debug) {
+		super();
+		if (debug) WEBSITE = "http://api.faceplusplus.com/";
 	}
 	
 	/**
