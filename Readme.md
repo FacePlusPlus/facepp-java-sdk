@@ -92,3 +92,16 @@ This SDK uses apache.http lib and json lib.
 * PictureDetect
 
 	An Android application. To get a picture, detect with FaceppSDK, then mark all faces out.
+
+## 7. Change Log
+* 1.0.0
+
+	The default api
+
+* 1.1.0
+
+	Add the new api `grouping' into SDK.
+
+* 1.2.0
+
+	Add https request method, and set it to default. We can use `debug = true` to  open http to instead of https.
