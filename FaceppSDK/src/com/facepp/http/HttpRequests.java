@@ -21,7 +21,7 @@ import com.facepp.result.FaceppResult;
  * {@code new HttpRequests(apiKey, apiSecret).train()}
  * @author moon5ckq
  * @since 1.0.0
- * @version 1.0.0
+ * @version 1.1.0
  */
 public class HttpRequests {
 	
@@ -776,6 +776,24 @@ public class HttpRequests {
 	*/
 	public FaceppResult recognitionSearch(PostParameters params) throws FaceppParseException{
 		return request("recognition", "search", params);
+	}
+	
+	
+	/**
+	* {@link #request(String, String)} <br />
+	* grouping/grouping
+	* @throws FaceppParseException 
+	*/
+	public FaceppResult groupingGrouping() throws FaceppParseException {
+		return request("grouping", "grouping");
+	}
+	/**
+	* {@link #request(String, String, PostParameters)} <br />
+	* grouping/grouping
+	* @throws FaceppParseException 
+	*/
+	public FaceppResult groupingGrouping(PostParameters params) throws FaceppParseException{
+		return request("grouping", "grouping", params);
 	}
 
 }

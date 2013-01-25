@@ -16,7 +16,7 @@ import com.facepp.error.FaceppParseException;
  * {@code faceppResult.get("face").get(0).get("attribute").get("gender").get("value").toString()}
  * @author moon5ckq
  * @since 1.0.0
- * @version 1.0.0
+ * @version 1.1.0
  */
 public class FaceppResult {
 	static public enum JsonType {
@@ -75,6 +75,10 @@ public class FaceppResult {
 		keyWordDict.put("QUOTA_ALL", JsonType.INT);
 		keyWordDict.put("QUOTA_SEARCH", JsonType.INT);
 		keyWordDict.put("center", JsonType.JSON);
+		
+		keyWordDict.put("ungrouped", JsonType.JSON);
+		keyWordDict.put("result", JsonType.JSON);
+		
 	}
 	
 	private Object json;

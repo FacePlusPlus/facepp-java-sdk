@@ -17,7 +17,7 @@ import org.apache.http.entity.mime.content.StringBody;
  * {@code new PostParameters().setMode("oneface").setImg(new File("...")).setTag("some message")}
  * @author moon5kcq
  * @since 1.0.0
- * @version 1.0.0
+ * @version 1.1.0
  */
 public class PostParameters {
 	private MultipartEntity multiPart = null;
@@ -59,6 +59,16 @@ public class PostParameters {
 	 */
 	public String boundaryString() {
 		return boundary;
+	}
+	
+	/**
+	 * async=true|false
+	 * @param flag
+	 * @return this
+	 */
+	public PostParameters setAsync(boolean flag) {
+		addString("async", ""+flag);
+		return this;
 	}
 	
 	/**
