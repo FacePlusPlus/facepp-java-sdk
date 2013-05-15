@@ -25,7 +25,7 @@ import com.facepp.result.FaceppResult;
  */
 public class HttpRequests {
 	
-	static private String WEBSITE = "https://api.faceplusplus.com/";
+	static private String WEBSITE = "https://api.faceplusplus.com/v1/";
 	static final private int BUFFERSIZE = 1048576;
 	static final private int TIMEOUT = 30000;
 	static final private int TRAINTIMEOUT = 60000;
