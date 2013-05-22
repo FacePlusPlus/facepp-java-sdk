@@ -27,57 +27,70 @@ public class FaceppResult {
 	
 	static {
 		keyWordDict = new Hashtable<String, FaceppResult.JsonType>();
-		keyWordDict.put("session_id", JsonType.STRING);
-		keyWordDict.put("url", JsonType.STRING);
-		keyWordDict.put("img_id", JsonType.STRING);
-		keyWordDict.put("face_id", JsonType.STRING);
-		keyWordDict.put("person_id", JsonType.STRING);
-		keyWordDict.put("group_id", JsonType.STRING);
-		keyWordDict.put("img_width", JsonType.INT);
-		keyWordDict.put("img_height", JsonType.INT);
-		keyWordDict.put("face", JsonType.ARRAY);
-		keyWordDict.put("width", JsonType.DOUBLE);
-		keyWordDict.put("height", JsonType.DOUBLE);
-		keyWordDict.put("eye_left", JsonType.JSON);
-		keyWordDict.put("eye_right", JsonType.JSON);
+		
+		keyWordDict.put("error", JsonType.STRING);
+		keyWordDict.put("error_code", JsonType.INT);
+		
 		keyWordDict.put("mouth_left", JsonType.JSON);
-		keyWordDict.put("mouth_right", JsonType.JSON);
+		keyWordDict.put("faceset_id", JsonType.STRING);
+		keyWordDict.put("url", JsonType.STRING);
+		keyWordDict.put("exceed", JsonType.INT);
+		keyWordDict.put("img_id", JsonType.STRING);
+		keyWordDict.put("total", JsonType.INT);
 		keyWordDict.put("attribute", JsonType.JSON);
-		keyWordDict.put("gender", JsonType.JSON);
-		keyWordDict.put("age", JsonType.JSON);
-		keyWordDict.put("race", JsonType.JSON);
-		keyWordDict.put("similarity", JsonType.DOUBLE);
-		keyWordDict.put("component_similarity", JsonType.JSON);
-		keyWordDict.put("is_same_person", JsonType.BOOL);
-		keyWordDict.put("candidate", JsonType.ARRAY);
-		keyWordDict.put("results", JsonType.ARRAY);
+		keyWordDict.put("mouth_right", JsonType.JSON);
+		keyWordDict.put("face", JsonType.ARRAY);
+		keyWordDict.put("finish_time", JsonType.INT);
+		keyWordDict.put("create_time", JsonType.INT);
+		keyWordDict.put("used", JsonType.INT);
+		keyWordDict.put("height", JsonType.DOUBLE);
 		keyWordDict.put("status", JsonType.STRING);
-		keyWordDict.put("response", JsonType.STRING);
+		keyWordDict.put("group", JsonType.ARRAY);
+		keyWordDict.put("similarity", JsonType.DOUBLE);
+		keyWordDict.put("eye_right", JsonType.JSON);
+		keyWordDict.put("is_same_person", JsonType.BOOL);
+		keyWordDict.put("face_id", JsonType.STRING);
+		keyWordDict.put("ungrouped", JsonType.ARRAY);
+		//keyWordDict.put("candidates", JsonType.ARRAY);
+		keyWordDict.put("width", JsonType.DOUBLE);
+		keyWordDict.put("added_person", JsonType.INT);
+		keyWordDict.put("group_name", JsonType.STRING);
+		keyWordDict.put("eye_left", JsonType.JSON);
+		keyWordDict.put("age", JsonType.JSON);
+		keyWordDict.put("group_id", JsonType.STRING);
+		keyWordDict.put("confidence", JsonType.DOUBLE);
+		keyWordDict.put("faceset_name", JsonType.STRING);
+		keyWordDict.put("person", JsonType.ARRAY);
+		keyWordDict.put("deleted", JsonType.INT);
+		keyWordDict.put("person_name", JsonType.STRING);
+		keyWordDict.put("removed", JsonType.INT);
+		keyWordDict.put("session_id", JsonType.STRING);
+		keyWordDict.put("success", JsonType.BOOL);
+		keyWordDict.put("person_id", JsonType.STRING);
+		keyWordDict.put("added_group", JsonType.INT);
+		keyWordDict.put("added_face", JsonType.INT);
+		keyWordDict.put("img_height", JsonType.INT);
+		keyWordDict.put("race", JsonType.JSON);
+		keyWordDict.put("tag", JsonType.STRING);
+		keyWordDict.put("img_width", JsonType.INT);
+		keyWordDict.put("component_similarity", JsonType.JSON);
+		keyWordDict.put("faceset", JsonType.ARRAY);
+		keyWordDict.put("gender", JsonType.JSON);
+		keyWordDict.put("result", JsonType.JSON);
+		keyWordDict.put("added", JsonType.INT);
+		keyWordDict.put("center", JsonType.JSON);
+		keyWordDict.put("nose", JsonType.JSON);
+		
+		
+		//keyWordDict.put("eye_left", JsonType.JSON);
+		keyWordDict.put("component_similarity", JsonType.JSON);
 		keyWordDict.put("x", JsonType.DOUBLE);
 		keyWordDict.put("y", JsonType.DOUBLE);
-		
-		keyWordDict.put("has_untrained_face", JsonType.BOOL);
-		keyWordDict.put("has_untrained_person", JsonType.BOOL);
-		keyWordDict.put("tag", JsonType.STRING);
-		keyWordDict.put("person_name", JsonType.STRING);
-		keyWordDict.put("group_name", JsonType.STRING);
 		keyWordDict.put("eyebrow", JsonType.DOUBLE);
-		keyWordDict.put("nose", JsonType.DOUBLE);
-		keyWordDict.put("eye", JsonType.DOUBLE);
 		keyWordDict.put("mouth", JsonType.DOUBLE);
-		keyWordDict.put("confidence", JsonType.DOUBLE);
-		keyWordDict.put("success", JsonType.BOOL);
 		keyWordDict.put("name", JsonType.STRING);
 		keyWordDict.put("description", JsonType.STRING);
 		keyWordDict.put("position", JsonType.JSON);
-		keyWordDict.put("person", JsonType.ARRAY);
-		keyWordDict.put("group", JsonType.ARRAY);
-		keyWordDict.put("QUOTA_ALL", JsonType.INT);
-		keyWordDict.put("QUOTA_SEARCH", JsonType.INT);
-		keyWordDict.put("center", JsonType.JSON);
-		
-		keyWordDict.put("ungrouped", JsonType.JSON);
-		keyWordDict.put("result", JsonType.JSON);
 		
 	}
 	
