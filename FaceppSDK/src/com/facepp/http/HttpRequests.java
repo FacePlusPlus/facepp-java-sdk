@@ -302,7 +302,7 @@ public class HttpRequests {
 		super();
 		this.apiKey = apiKey;
 		this.apiSecret = apiSecret;
-		if (debug) WEBSITE = "http://api.faceplusplus.com/";
+		if (debug) WEBSITE = "http://api.faceplusplus.com/v1/";
 	}
 
 	/**
@@ -311,7 +311,7 @@ public class HttpRequests {
 	 */
 	public HttpRequests(boolean debug) {
 		super();
-		if (debug) WEBSITE = "http://api.faceplusplus.com/";
+		if (debug) WEBSITE = "http://api.faceplusplus.com/v1/";
 	}
 	
 	/**

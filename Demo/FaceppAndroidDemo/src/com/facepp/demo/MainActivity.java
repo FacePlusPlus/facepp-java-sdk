@@ -38,7 +38,7 @@ public class MainActivity extends Activity {
 					System.out.println("FacePlusPlus API Test:");
 					
 					//detection/detect
-					result = httpRequests.detectionDetect(new PostParameters().setUrl("http://faceplusplus.com/static/img/demo/20.jpg"));
+					result = httpRequests.detectionDetect(new PostParameters().setUrl("http://cn.faceplusplus.com/wp-content/themes/faceplusplus.zh/assets/img/demo/9.jpg"));
 					System.out.println(result);
 					
 					//-----------------Person-----------------
@@ -97,7 +97,7 @@ public class MainActivity extends Activity {
 					
 					//recognition/recognize
 					System.out.println("\nrecognition/recognize");
-					System.out.println(httpRequests.recognitionRecognize(new PostParameters().setGroupName("group_test").setUrl("http://faceplusplus.com/static/img/demo/20.jpg")));
+					System.out.println(httpRequests.recognitionRecognize(new PostParameters().setGroupName("group_test").setUrl("http://cn.faceplusplus.com/wp-content/themes/faceplusplus.zh/assets/img/demo/5.jpg")));
 					
 					//recognition/search
 					System.out.println("\nrecognition/search");
@@ -167,10 +167,9 @@ public class MainActivity extends Activity {
 						}
 					} catch (FaceppParseException e) {
 						e.printStackTrace();
-					} catch (Exception e2) {
-						e2.printStackTrace();
 					}
 				}
+				
 				
 				try {
 					//-----Debug----

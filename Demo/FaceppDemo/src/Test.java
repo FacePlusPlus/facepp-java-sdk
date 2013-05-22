@@ -24,7 +24,7 @@ public static void main(String[] args) {
 			System.out.println("FacePlusPlus API Test:");
 			
 			//detection/detect
-			result = httpRequests.detectionDetect(new PostParameters().setUrl("http://faceplusplus.com/static/img/demo/20.jpg"));
+			result = httpRequests.detectionDetect(new PostParameters().setUrl("http://cn.faceplusplus.com/wp-content/themes/faceplusplus.zh/assets/img/demo/9.jpg"));
 			System.out.println(result);
 			
 			//-----------------Person-----------------
@@ -83,7 +83,7 @@ public static void main(String[] args) {
 			
 			//recognition/recognize
 			System.out.println("\nrecognition/recognize");
-			System.out.println(httpRequests.recognitionRecognize(new PostParameters().setGroupName("group_test").setUrl("http://faceplusplus.com/static/img/demo/20.jpg")));
+			System.out.println(httpRequests.recognitionRecognize(new PostParameters().setGroupName("group_test").setUrl("http://cn.faceplusplus.com/wp-content/themes/faceplusplus.zh/assets/img/demo/5.jpg")));
 			
 			//recognition/search
 			System.out.println("\nrecognition/search");
