@@ -20,7 +20,7 @@ This SDK uses apache.http lib and json lib.
 
 2. create a com.facepp.http.PostParameters object with all parameters
 
-	`PostParameters postParameters = new PostParameters().setUrl("http://faceplusplus.com/static/img/demo/8.jpg").setAttribute("all");`
+	`PostParameters postParameters = new PostParameters().setUrl("http://cn.faceplusplus.com/wp-content/themes/faceplusplus.zh/assets/img/demo/9.jpg").setAttribute("all");`
 
 3. request
 
@@ -105,3 +105,7 @@ This SDK uses apache.http lib and json lib.
 * 1.2.0
 
 	Add https request method, and set it to default. We can use `debug = true` to  open http to instead of https.
+
+* 1.3.0
+
+	Modified the code, let the v1 SDK to use the v2 API(online).
