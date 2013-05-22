@@ -3,7 +3,7 @@
 This SDK uses apache.http lib and json lib.
 
 ## 1. Install
-1. download [facepp.jar](http://faceplusplus.com/static/sdk/java/facepp.jar);
+1. download [faceppsdk.jar](https://raw.github.com/FacePlusPlus/facepp-java-sdk/facepp-v1/FaceppSDK/output/faceppsdk.jar);
 2. add it to java project.
 
 ## 2. Import package
