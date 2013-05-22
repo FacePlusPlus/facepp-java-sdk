@@ -1,18 +1,16 @@
 package com.facepp.demo;
 
-import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.Menu;
 
 import com.facepp.error.FaceppParseException;
 import com.facepp.http.HttpRequests;
 import com.facepp.http.PostParameters;
 import com.facepp.result.FaceppResult;
-
-import android.os.Bundle;
-import android.app.Activity;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.support.v4.app.NavUtils;
 
 /**
  * Facepp SDK Android test
@@ -29,23 +27,30 @@ public class MainActivity extends Activity {
         
         new Thread(new Runnable() {
 			public void run() {
-				HttpRequests httpRequests = new HttpRequests("api_key", "api_secret");
+				//replace api_key and api_secret here (note)
+				HttpRequests httpRequests = new HttpRequests("api_key", "api_secret", true, true);
 				
 				FaceppResult result = null;
 				
 				try {
+					
+					System.out.println(Charset.forName("UTF-8").name());
 				
 					System.out.println("FacePlusPlus API Test:");
 					
 					//detection/detect
-					result = httpRequests.detectionDetect(new PostParameters().setUrl("http://faceplusplus.com/static/img/demo/20.jpg"));
+					result = httpRequests.detectionDetect(new PostParameters().setUrl("http://cn.faceplusplus.com/wp-content/themes/faceplusplus.zh/assets/img/demo/9.jpg"));
 					System.out.println(result);
+					
+					System.out.println(result.get("face").get(0).get("position").get("center"));
 					
 					//-----------------Person-----------------
 					//person/create
 					System.out.println("\nperson/create");
 					for (int i = 0; i < result.get("face").getCount(); ++i)
 						System.out.println(httpRequests.personCreate(new PostParameters().setPersonName("person_"+i)));
+					
+					new PostParameters().setPersonName("person_"+0).setFaceId(result.get("face").get(0).get("face_id").toString()).getMultiPart().writeTo(System.out);
 					
 					//person/add_face
 					System.out.println("\nperson/add_face");
@@ -54,8 +59,10 @@ public class MainActivity extends Activity {
 					
 					//person/set_info
 					System.out.println("\nperson/set_info");
-					for (int i = 0; i < result.get("face").getCount(); ++i)
-						System.out.println(httpRequests.personSetInfo(new PostParameters().setPersonName("person_"+i).setTag("tag_"+i)));
+					for (int i = 0; i < result.get("face").getCount(); ++i) {
+						new PostParameters().setPersonName("person_"+i).setTag("中文 tag_"+i).getMultiPart().writeTo(System.out);
+						System.out.println(httpRequests.personSetInfo(new PostParameters().setPersonName("person_"+i).setTag("中文 tag_"+i)));
+					}
 					
 					//person/get_info
 					System.out.println("\nperson/get_info");
@@ -67,41 +74,45 @@ public class MainActivity extends Activity {
 					//-----------------Group-----------------
 					//group/create
 					System.out.println("\ngroup/create");
-					System.out.println(httpRequests.groupCreate(new PostParameters().setGroupName("group_test")));
+					System.out.println(httpRequests.groupCreate(new PostParameters().setGroupName("group_0")));
 					
 					//group/add_person
 					System.out.println("\ngroup/add_person");
 					ArrayList<String> personList = new ArrayList<String>();
 					for (int i = 0; i < result.get("face").getCount(); ++i)
 						personList.add("person_"+i);
-					System.out.println(httpRequests.groupAddPerson(new PostParameters().setGroupName("group_test").setPersonName(personList)));
+					
+					new PostParameters().setGroupName("group_0").setPersonName(personList).getMultiPart().writeTo(System.out);
+					System.out.println(httpRequests.groupAddPerson(new PostParameters().setGroupName("group_0").setPersonName(personList)));
 					
 					//group/set_info
 					System.out.println("\ngroup/set_info");
-					System.out.println(httpRequests.groupSetInfo(new PostParameters().setGroupName("group_test").setTag("group tag")));
+					System.out.println(httpRequests.groupSetInfo(new PostParameters().setGroupName("group_0").setTag("group tag")));
 					
 					//group/get_info
 					System.out.println("\ngroup/get_info");
-					System.out.println(httpRequests.groupGetInfo(new PostParameters().setGroupName("group_test")));
+					System.out.println(httpRequests.groupGetInfo(new PostParameters().setGroupName("group_0")));
 					
 					
 					//-----------------Recognition-----------------
-					//recognition/compare
-					System.out.println("\nrecognition/compare");
-					System.out.println(httpRequests.recognitionCompare(
-							new PostParameters().setFaceId1(result.get("face").get(0).get("face_id").toString()).setFaceId2(result.get("face").get(1).get("face_id").toString())));
 					
 					//recognition/train
-					System.out.println("\nrecognition/train");
-					System.out.println(httpRequests.train(new PostParameters().setGroupName("group_test").setType("all")));
+					FaceppResult syncRet = null; 
+					
+					System.out.println("\ntrain/Identify");
+					syncRet = httpRequests.trainIdentify(new PostParameters().setGroupName("group_0"));
+					System.out.println(syncRet);
+					System.out.println(httpRequests.getSessionSync(syncRet.get("session_id").toString()));
+					
+					System.out.println("\ntrain/verify");
+					for (int i = 0; i < result.get("face").getCount(); ++i) {
+						syncRet = httpRequests.trainVerify(new PostParameters().setPersonName("person_" + i));
+						System.out.println(httpRequests.getSessionSync(syncRet.get("session_id").toString()));
+					}
 					
 					//recognition/recognize
-					System.out.println("\nrecognition/recognize");
-					System.out.println(httpRequests.recognitionRecognize(new PostParameters().setGroupName("group_test").setUrl("http://faceplusplus.com/static/img/demo/20.jpg")));
-					
-					//recognition/search
-					System.out.println("\nrecognition/search");
-					System.out.println(httpRequests.recognitionSearch(new PostParameters().setGroupName("group_test").setKeyFaceId(result.get("face").get(0).get("face_id").toString())));
+					System.out.println("\nrecognition/identify");
+					System.out.println(httpRequests.recognitionIdentify(new PostParameters().setGroupName("group_0").setUrl("http://cn.faceplusplus.com/wp-content/themes/faceplusplus.zh/assets/img/demo/5.jpg")));
 					
 					//recognition/verify
 					System.out.println("\nrecognition/verify");
@@ -145,7 +156,7 @@ public class MainActivity extends Activity {
 					
 					//group/delete
 					System.out.println("\ngroup/delete");
-					System.out.println(httpRequests.groupDelete(new PostParameters().setGroupName("group_test")));
+					System.out.println(httpRequests.groupDelete(new PostParameters().setGroupName("group_0")));
 					
 					//person/delete
 					System.out.println("\nperson/delete");
@@ -155,34 +166,12 @@ public class MainActivity extends Activity {
 					e.printStackTrace();
 				} catch (Exception e) {
 				} finally {
-					
-					//delete all person
 					try {
-						for (int i = 1; i < result.get("face").getCount(); ++i) {
-							try {		
-								httpRequests.personDelete(new PostParameters().setPersonName("person_"+i));
-							} catch (FaceppParseException e) {
-								e.printStackTrace();
-							}
-						}
+						for (int i = 1; i < result.get("face").getCount(); ++i)
+							httpRequests.personDelete(new PostParameters().setPersonName("person_"+i));
 					} catch (FaceppParseException e) {
 						e.printStackTrace();
-					} catch (Exception e2) {
-						e2.printStackTrace();
 					}
-				}
-				
-				try {
-					//-----Debug----
-					//How to watch what's the http post sent?
-					//If we have a PostParameters object, we can do .getMultiPart().wrtieTo(outputStream) to watch the message.
-					System.out.println("\nDebug");
-					System.out.println("=========message=========");
-					PostParameters postParameters = new PostParameters().setPersonName("a person").setGroupName("a group");
-					postParameters.getMultiPart().writeTo(System.out);
-					System.out.println("=========message=========");
-				} catch (IOException e) {
-					e.printStackTrace();
 				}
 			}
 		}).start();

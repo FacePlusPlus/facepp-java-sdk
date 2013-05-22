@@ -92,12 +92,12 @@ public class MainActivity extends Activity {
 							for (int i = 0; i < count; ++i) {
 								float x, y, w, h;
 								//get the center point
-								x = (float)rst.get("face").get(i).get("center").get("x").toDouble().doubleValue();
-								y = (float)rst.get("face").get(i).get("center").get("y").toDouble().doubleValue();
+								x = (float)rst.get("face").get(i).get("position").get("center").get("x").toDouble().doubleValue();
+								y = (float)rst.get("face").get(i).get("position").get("center").get("y").toDouble().doubleValue();
 
 								//get face size
-								w = (float)rst.get("face").get(i).get("width").toDouble().doubleValue();
-								h = (float)rst.get("face").get(i).get("height").toDouble().doubleValue();
+								w = (float)rst.get("face").get(i).get("position").get("width").toDouble().doubleValue();
+								h = (float)rst.get("face").get(i).get("position").get("height").toDouble().doubleValue();
 								
 								//change percent value to the real size
 								x = x / 100 * img.getWidth();
