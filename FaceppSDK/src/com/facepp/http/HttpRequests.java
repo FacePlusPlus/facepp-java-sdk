@@ -32,7 +32,7 @@ public class HttpRequests {
 	 
 	static final private int BUFFERSIZE = 1048576;
 	static final private int TIMEOUT = 30000;
-	static final private int TRAINTIMEOUT = 60000;
+	static final private int SYNC_TIMEOUT = 60000;
 	
 	private String webSite;
 	private String apiKey, apiSecret;
@@ -216,6 +216,16 @@ public class HttpRequests {
 //		
 //		return null;
 //	}
+	
+	/**
+	 * default timeout time is 1 minute
+	 * @param sessionId
+	 * @return the getSession Result
+	 * @throws FaceppParseException
+	 */
+	public FaceppResult getSessionSync(String sessionId) throws FaceppParseException {
+		return getSessionSync(sessionId, SYNC_TIMEOUT);
+	}
 	
 	/**
 	 * timeout time is [timeOut]ms, the method is synchronized.
