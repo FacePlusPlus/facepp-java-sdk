@@ -3,7 +3,7 @@
 This SDK uses apache.http lib and json lib.
 
 ## 1. Install
-1. download [facepp.jar](http://faceplusplus.com/static/sdk/java/facepp.jar);
+1. download [faceppsdk.jar](https://raw.github.com/FacePlusPlus/facepp-java-sdk/facepp-v2/FaceppSDK/output/faceppsdk.jar);
 2. add it to java project.
 
 ## 2. Import package
@@ -20,7 +20,7 @@ This SDK uses apache.http lib and json lib.
 
 2. create a com.facepp.http.PostParameters object with all parameters
 
-	`PostParameters postParameters = new PostParameters().setUrl("http://faceplusplus.com/static/img/demo/8.jpg").setAttribute("all");`
+	`PostParameters postParameters = new PostParameters().setUrl("http://cn.faceplusplus.com/wp-content/themes/faceplusplus.zh/assets/img/demo/9.jpg").setAttribute("all");`
 
 3. request
 
@@ -40,9 +40,9 @@ This SDK uses apache.http lib and json lib.
 
 	`result.get("face").getCount()`
 
-	`result.get("face").get(0).get("face_id").toString()`
+	`result.get("face").get(0).get("position").get("face_id").toString()`
 
-	`result.get("face").get(0).get("attribute").get("gender").get("confidence").toDouble()`
+	`result.get("face").get(0).get("position").get("attribute").get("gender").get("confidence").toDouble()`
 
 ## 5. Debug
 1. View the post request
@@ -105,3 +105,7 @@ This SDK uses apache.http lib and json lib.
 * 1.2.0
 
 	Add https request method, and set it to default. We can use `debug = true` to  open http to instead of https.
+
+* 2.0.0
+
+	Face-Plus-Plus 2.0 has released. This SDK can use the new API now.
