@@ -1,5 +1,7 @@
 # FacePlusPlus Java SDK
 
+note: this branch has outdated, for new api please tray to use facepp-v1 or facepp-v2 branch.
+
 This SDK uses apache.http lib and json lib.
 
 ## 1. Install
