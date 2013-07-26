@@ -51,7 +51,7 @@ public class FaceppResult {
 		keyWordDict.put("is_same_person", JsonType.BOOL);
 		keyWordDict.put("face_id", JsonType.STRING);
 		keyWordDict.put("ungrouped", JsonType.ARRAY);
-		//keyWordDict.put("candidates", JsonType.ARRAY);
+		keyWordDict.put("candidate", JsonType.ARRAY);
 		keyWordDict.put("width", JsonType.DOUBLE);
 		keyWordDict.put("added_person", JsonType.INT);
 		keyWordDict.put("group_name", JsonType.STRING);
