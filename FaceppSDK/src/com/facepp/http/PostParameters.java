@@ -355,7 +355,25 @@ public class PostParameters {
 		return this;
 	}
 	
+	/**
+	 * faceset_name=...
+	 * @param facesetName
+	 * @return this
+	 */
+	public PostParameters setFacesetName(String facesetName) {
+		addString("faceset_name", facesetName);
+		return this;
+	}
 	
+	/**
+	 * `attr`=`value`
+	 * @param attr value
+	 * @return this
+	 */
+	public PostParameters addAttribute(String attr, String value) {
+		addString(attr, value);
+		return this;
+	}
 	
 	private void addString(String id, String str) {
 		try {

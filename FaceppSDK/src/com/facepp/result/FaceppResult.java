@@ -98,6 +98,10 @@ public class FaceppResult {
 	private JsonType type;
 	private int httpResponseCode = 0;
 	
+	static public void addKeyWord(String name, FaceppResult.JsonType type) {
+		keyWordDict.put(name, type);
+	}
+	
 	/**
 	 * @param json
 	 */
