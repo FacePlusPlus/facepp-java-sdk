@@ -12,7 +12,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.facepp.error.FaceppParseException;
-import com.facepp.result.FaceppResult;
 
 /**
  * request to faceplusplus.com<br />
@@ -21,7 +20,7 @@ import com.facepp.result.FaceppResult;
  * {@code new HttpRequests(apiKey, apiSecret).train()}
  * @author moon5ckq
  * @since 1.0.0
- * @version 1.2.0
+ * @version 1.3.0
  */
 public class HttpRequests {
 	
@@ -113,7 +112,7 @@ public class HttpRequests {
 	 * @param action
 	 * @return a result object
 	 */
-	public FaceppResult request(String control, String action) throws FaceppParseException {
+	public JSONObject request(String control, String action) throws FaceppParseException {
 		return request(control, action, getParams());
 	}
 	
@@ -223,7 +222,7 @@ public class HttpRequests {
 	 * @return the getSession Result
 	 * @throws FaceppParseException
 	 */
-	public FaceppResult getSessionSync(String sessionId) throws FaceppParseException {
+	public JSONObject getSessionSync(String sessionId) throws FaceppParseException {
 		return getSessionSync(sessionId, SYNC_TIMEOUT);
 	}
 	
@@ -234,20 +233,20 @@ public class HttpRequests {
 	 * @return the getSession Result
 	 * @throws FaceppParseException
 	 */
-	public FaceppResult getSessionSync(String sessionId, long timeOut) throws FaceppParseException {
+	public JSONObject getSessionSync(String sessionId, long timeOut) throws FaceppParseException {
 		final StringBuilder sb = new StringBuilder();
 		long t = new Date().getTime() + timeOut;
 		while (true) {
-			FaceppResult rst =  HttpRequests.this.request("info", "get_session", new PostParameters().setSessionId(sessionId));
+			JSONObject rst =  HttpRequests.this.request("info", "get_session", new PostParameters().setSessionId(sessionId));
 			try {
-				if (rst.get("status").toString().equals("SUCC")) {
+				if (rst.getString("status").equals("SUCC")) {
 					sb.append(rst.toString());
 					break;
-				} else if (rst.get("status").toString().equals("INVALID_SESSION")) {
+				} else if (rst.getString("status").equals("INVALID_SESSION")) {
 					sb.append("INVALID_SESSION");
 					break;
 				}
-			} catch (FaceppParseException e) {
+			} catch (JSONException e) {
 				sb.append("Unknow error.");
 				break;
 			}
@@ -274,7 +273,9 @@ public class HttpRequests {
 			throw new FaceppParseException("Get session time out.");
 		} else {
 			try {
-				return new FaceppResult(new JSONObject(rst), 200);
+				JSONObject result = new JSONObject(rst);
+				result.put("response_code", 200);
+				return result;
 			} catch (JSONException e) {
 			}
 		}
@@ -291,7 +292,7 @@ public class HttpRequests {
 	 * @return a result object
 	 * @throws FaceppParseException
 	 */
-	public FaceppResult request(String control, String action, PostParameters params) throws FaceppParseException {
+	public JSONObject request(String control, String action, PostParameters params) throws FaceppParseException {
 		URL url;
 		HttpURLConnection urlConn = null;
 		try {
@@ -318,17 +319,18 @@ public class HttpRequests {
             else
             	resultString = readString(urlConn.getErrorStream());
 	        
-            FaceppResult result = new FaceppResult( new JSONObject(resultString), urlConn.getResponseCode());
+            //FaceppResult result = new FaceppResult( new JSONObject(resultString), urlConn.getResponseCode());
+            JSONObject result = new JSONObject(resultString);
             
-            
-            if (result.isError()) {
+            if (result.has("error")) {
             	
-            	
-            	if (result.get("error").toString().equals("API not found"))
+            	if (result.getString("error").equals("API not found"))
             		throw new FaceppParseException("API not found");
             	
-            	throw new FaceppParseException("API error.", result.getErrorCode(), result.getErrorMessage(), result.getHttpResponseCode());
+            	throw new FaceppParseException("API error.", result.getInt("error_code"),
+            			result.getString("error"), urlConn.getResponseCode());
             }
+            result.put("response_code", urlConn.getResponseCode());
             return result;
 		} catch (Exception e) {
 			throw new FaceppParseException("error :" + e.toString());
@@ -406,250 +408,287 @@ public class HttpRequests {
 		this.params = params;
 	}
 	
-	//all api here
+	/**
+	 * used by offline detect
+	 * example: request.offlineDetect(detecter.getImageByteArray(), detecter.getResultJsonString());
+	 * @param image
+	 * @param jsonResult
+	 * @return
+	 * @throws FaceppParseException
+	 */
+	public JSONObject offlineDetect(byte[] image, String jsonResult) throws FaceppParseException {
+		return offlineDetect(image, jsonResult, this.params);
+	}
+	/**
+	 * used by offline detect
+	 * example: request.offlineDetect(detecter.getImageByteArray(), detecter.getResultJsonString(), params);
+	 * @param image
+	 * @param jsonResult
+	 * @param params
+	 * @return
+	 * @throws FaceppParseException
+	 */
+	public JSONObject offlineDetect(byte[] image, String jsonResult, PostParameters params) throws FaceppParseException{
+		if (params == null) params = new PostParameters();
+		params.setImg(image);
+		params.setMode("offline");
+		params.addAttribute("offline_result", jsonResult);
+		return request("detection", "detect", params);
+	}
 	
-	public FaceppResult detectionDetect() throws FaceppParseException {
+	//all api here
+	public JSONObject detectionDetect() throws FaceppParseException {
 		return request("detection", "detect");
 	}
-	public FaceppResult detectionDetect(PostParameters params) throws FaceppParseException{
+	public JSONObject detectionDetect(PostParameters params) throws FaceppParseException{
 		return request("detection", "detect", params);
 	}
 
-	public FaceppResult trainVerify() throws FaceppParseException {
+	public JSONObject trainVerify() throws FaceppParseException {
 		return request("train", "verify");
 	}
-	public FaceppResult trainVerify(PostParameters params) throws FaceppParseException{
+	public JSONObject trainVerify(PostParameters params) throws FaceppParseException{
 		return request("train", "verify", params);
 	}
 
-	public FaceppResult trainSearch() throws FaceppParseException {
+	public JSONObject trainSearch() throws FaceppParseException {
 		return request("train", "search");
 	}
-	public FaceppResult trainSearch(PostParameters params) throws FaceppParseException{
+	public JSONObject trainSearch(PostParameters params) throws FaceppParseException{
 		return request("train", "search", params);
 	}
 
-	public FaceppResult trainIdentify() throws FaceppParseException {
+	public JSONObject trainIdentify() throws FaceppParseException {
 		return request("train", "identify");
 	}
-	public FaceppResult trainIdentify(PostParameters params) throws FaceppParseException{
+	public JSONObject trainIdentify(PostParameters params) throws FaceppParseException{
 		return request("train", "identify", params);
 	}
 
-	public FaceppResult recognitionCompare() throws FaceppParseException {
+	public JSONObject recognitionCompare() throws FaceppParseException {
 		return request("recognition", "compare");
 	}
-	public FaceppResult recognitionCompare(PostParameters params) throws FaceppParseException{
+	public JSONObject recognitionCompare(PostParameters params) throws FaceppParseException{
 		return request("recognition", "compare", params);
 	}
 
-	public FaceppResult recognitionVerify() throws FaceppParseException {
+	public JSONObject recognitionVerify() throws FaceppParseException {
 		return request("recognition", "verify");
 	}
-	public FaceppResult recognitionVerify(PostParameters params) throws FaceppParseException{
+	public JSONObject recognitionVerify(PostParameters params) throws FaceppParseException{
 		return request("recognition", "verify", params);
 	}
 
-	public FaceppResult recognitionSearch() throws FaceppParseException {
+	public JSONObject recognitionSearch() throws FaceppParseException {
 		return request("recognition", "search");
 	}
-	public FaceppResult recognitionSearch(PostParameters params) throws FaceppParseException{
+	public JSONObject recognitionSearch(PostParameters params) throws FaceppParseException{
 		return request("recognition", "search", params);
 	}
 
-	public FaceppResult recognitionIdentify() throws FaceppParseException {
+	public JSONObject recognitionIdentify() throws FaceppParseException {
 		return request("recognition", "identify");
 	}
-	public FaceppResult recognitionIdentify(PostParameters params) throws FaceppParseException{
+	public JSONObject recognitionIdentify(PostParameters params) throws FaceppParseException{
 		return request("recognition", "identify", params);
 	}
 
-	public FaceppResult groupingGrouping() throws FaceppParseException {
+	public JSONObject groupingGrouping() throws FaceppParseException {
 		return request("grouping", "grouping");
 	}
-	public FaceppResult groupingGrouping(PostParameters params) throws FaceppParseException{
+	public JSONObject groupingGrouping(PostParameters params) throws FaceppParseException{
 		return request("grouping", "grouping", params);
 	}
 
-	public FaceppResult personCreate() throws FaceppParseException {
+	public JSONObject personCreate() throws FaceppParseException {
 		return request("person", "create");
 	}
-	public FaceppResult personCreate(PostParameters params) throws FaceppParseException{
+	public JSONObject personCreate(PostParameters params) throws FaceppParseException{
 		return request("person", "create", params);
 	}
 
-	public FaceppResult personDelete() throws FaceppParseException {
+	public JSONObject personDelete() throws FaceppParseException {
 		return request("person", "delete");
 	}
-	public FaceppResult personDelete(PostParameters params) throws FaceppParseException{
+	public JSONObject personDelete(PostParameters params) throws FaceppParseException{
 		return request("person", "delete", params);
 	}
 
-	public FaceppResult personAddFace() throws FaceppParseException {
+	public JSONObject personAddFace() throws FaceppParseException {
 		return request("person", "add_face");
 	}
-	public FaceppResult personAddFace(PostParameters params) throws FaceppParseException{
+	public JSONObject personAddFace(PostParameters params) throws FaceppParseException{
 		return request("person", "add_face", params);
 	}
 
-	public FaceppResult personRemoveFace() throws FaceppParseException {
+	public JSONObject personRemoveFace() throws FaceppParseException {
 		return request("person", "remove_face");
 	}
-	public FaceppResult personRemoveFace(PostParameters params) throws FaceppParseException{
+	public JSONObject personRemoveFace(PostParameters params) throws FaceppParseException{
 		return request("person", "remove_face", params);
 	}
 
-	public FaceppResult personSetInfo() throws FaceppParseException {
+	public JSONObject personSetInfo() throws FaceppParseException {
 		return request("person", "set_info");
 	}
-	public FaceppResult personSetInfo(PostParameters params) throws FaceppParseException{
+	public JSONObject personSetInfo(PostParameters params) throws FaceppParseException{
 		return request("person", "set_info", params);
 	}
 
-	public FaceppResult personGetInfo() throws FaceppParseException {
+	public JSONObject personGetInfo() throws FaceppParseException {
 		return request("person", "get_info");
 	}
-	public FaceppResult personGetInfo(PostParameters params) throws FaceppParseException{
+	public JSONObject personGetInfo(PostParameters params) throws FaceppParseException{
 		return request("person", "get_info", params);
 	}
 
-	public FaceppResult facesetCreate() throws FaceppParseException {
+	public JSONObject facesetCreate() throws FaceppParseException {
 		return request("faceset", "create");
 	}
-	public FaceppResult facesetCreate(PostParameters params) throws FaceppParseException{
+	public JSONObject facesetCreate(PostParameters params) throws FaceppParseException{
 		return request("faceset", "create", params);
 	}
 
-	public FaceppResult facesetDelete() throws FaceppParseException {
+	public JSONObject facesetDelete() throws FaceppParseException {
 		return request("faceset", "delete");
 	}
-	public FaceppResult facesetDelete(PostParameters params) throws FaceppParseException{
+	public JSONObject facesetDelete(PostParameters params) throws FaceppParseException{
 		return request("faceset", "delete", params);
 	}
 
-	public FaceppResult facesetAddFace() throws FaceppParseException {
+	public JSONObject facesetAddFace() throws FaceppParseException {
 		return request("faceset", "add_face");
 	}
-	public FaceppResult facesetAddFace(PostParameters params) throws FaceppParseException{
+	public JSONObject facesetAddFace(PostParameters params) throws FaceppParseException{
 		return request("faceset", "add_face", params);
 	}
 
-	public FaceppResult facesetRemoveFace() throws FaceppParseException {
+	public JSONObject facesetRemoveFace() throws FaceppParseException {
 		return request("faceset", "remove_face");
 	}
-	public FaceppResult facesetRemoveFace(PostParameters params) throws FaceppParseException{
+	public JSONObject facesetRemoveFace(PostParameters params) throws FaceppParseException{
 		return request("faceset", "remove_face", params);
 	}
 
-	public FaceppResult facesetSetInfo() throws FaceppParseException {
+	public JSONObject facesetSetInfo() throws FaceppParseException {
 		return request("faceset", "set_info");
 	}
-	public FaceppResult facesetSetInfo(PostParameters params) throws FaceppParseException{
+	public JSONObject facesetSetInfo(PostParameters params) throws FaceppParseException{
 		return request("faceset", "set_info", params);
 	}
 
-	public FaceppResult facesetGetInfo() throws FaceppParseException {
+	public JSONObject facesetGetInfo() throws FaceppParseException {
 		return request("faceset", "get_info");
 	}
-	public FaceppResult facesetGetInfo(PostParameters params) throws FaceppParseException{
+	public JSONObject facesetGetInfo(PostParameters params) throws FaceppParseException{
 		return request("faceset", "get_info", params);
 	}
 
-	public FaceppResult groupCreate() throws FaceppParseException {
+	public JSONObject groupCreate() throws FaceppParseException {
 		return request("group", "create");
 	}
-	public FaceppResult groupCreate(PostParameters params) throws FaceppParseException{
+	public JSONObject groupCreate(PostParameters params) throws FaceppParseException{
 		return request("group", "create", params);
 	}
 
-	public FaceppResult groupDelete() throws FaceppParseException {
+	public JSONObject groupDelete() throws FaceppParseException {
 		return request("group", "delete");
 	}
-	public FaceppResult groupDelete(PostParameters params) throws FaceppParseException{
+	public JSONObject groupDelete(PostParameters params) throws FaceppParseException{
 		return request("group", "delete", params);
 	}
 
-	public FaceppResult groupAddPerson() throws FaceppParseException {
+	public JSONObject groupAddPerson() throws FaceppParseException {
 		return request("group", "add_person");
 	}
-	public FaceppResult groupAddPerson(PostParameters params) throws FaceppParseException{
+	public JSONObject groupAddPerson(PostParameters params) throws FaceppParseException{
 		return request("group", "add_person", params);
 	}
 
-	public FaceppResult groupRemovePerson() throws FaceppParseException {
+	public JSONObject groupRemovePerson() throws FaceppParseException {
 		return request("group", "remove_person");
 	}
-	public FaceppResult groupRemovePerson(PostParameters params) throws FaceppParseException{
+	public JSONObject groupRemovePerson(PostParameters params) throws FaceppParseException{
 		return request("group", "remove_person", params);
 	}
 
-	public FaceppResult groupSetInfo() throws FaceppParseException {
+	public JSONObject groupSetInfo() throws FaceppParseException {
 		return request("group", "set_info");
 	}
-	public FaceppResult groupSetInfo(PostParameters params) throws FaceppParseException{
+	public JSONObject groupSetInfo(PostParameters params) throws FaceppParseException{
 		return request("group", "set_info", params);
 	}
 
-	public FaceppResult groupGetInfo() throws FaceppParseException {
+	public JSONObject groupGetInfo() throws FaceppParseException {
 		return request("group", "get_info");
 	}
-	public FaceppResult groupGetInfo(PostParameters params) throws FaceppParseException{
+	public JSONObject groupGetInfo(PostParameters params) throws FaceppParseException{
 		return request("group", "get_info", params);
 	}
 
-	public FaceppResult infoGetImage() throws FaceppParseException {
+	public JSONObject infoGetImage() throws FaceppParseException {
 		return request("info", "get_image");
 	}
-	public FaceppResult infoGetImage(PostParameters params) throws FaceppParseException{
+	public JSONObject infoGetImage(PostParameters params) throws FaceppParseException{
 		return request("info", "get_image", params);
 	}
 
-	public FaceppResult infoGetFace() throws FaceppParseException {
+	public JSONObject infoGetFace() throws FaceppParseException {
 		return request("info", "get_face");
 	}
-	public FaceppResult infoGetFace(PostParameters params) throws FaceppParseException{
+	public JSONObject infoGetFace(PostParameters params) throws FaceppParseException{
 		return request("info", "get_face", params);
 	}
 
-	public FaceppResult infoGetPersonList() throws FaceppParseException {
+	public JSONObject infoGetPersonList() throws FaceppParseException {
 		return request("info", "get_person_list");
 	}
-	public FaceppResult infoGetPersonList(PostParameters params) throws FaceppParseException{
+	public JSONObject infoGetPersonList(PostParameters params) throws FaceppParseException{
 		return request("info", "get_person_list", params);
 	}
 
-	public FaceppResult infoGetFacesetList() throws FaceppParseException {
+	public JSONObject infoGetFacesetList() throws FaceppParseException {
 		return request("info", "get_faceset_list");
 	}
-	public FaceppResult infoGetFacesetList(PostParameters params) throws FaceppParseException{
+	public JSONObject infoGetFacesetList(PostParameters params) throws FaceppParseException{
 		return request("info", "get_faceset_list", params);
 	}
 
-	public FaceppResult infoGetGroupList() throws FaceppParseException {
+	public JSONObject infoGetGroupList() throws FaceppParseException {
 		return request("info", "get_group_list");
 	}
-	public FaceppResult infoGetGroupList(PostParameters params) throws FaceppParseException{
+	public JSONObject infoGetGroupList(PostParameters params) throws FaceppParseException{
 		return request("info", "get_group_list", params);
 	}
 
-	public FaceppResult infoGetSession() throws FaceppParseException {
+	public JSONObject infoGetSession() throws FaceppParseException {
 		return request("info", "get_session");
 	}
-	public FaceppResult infoGetSession(PostParameters params) throws FaceppParseException{
+	public JSONObject infoGetSession(PostParameters params) throws FaceppParseException{
 		return request("info", "get_session", params);
 	}
 
-	public FaceppResult infoGetQuota() throws FaceppParseException {
+	/**
+	 * @deprecated this api is deprecated
+	 * @return
+	 * @throws FaceppParseException
+	 */
+	public JSONObject infoGetQuota() throws FaceppParseException {
 		return request("info", "get_quota");
 	}
-	public FaceppResult infoGetQuota(PostParameters params) throws FaceppParseException{
+	/**
+	 * @deprecated this api is deprecated
+	 * @return
+	 * @throws FaceppParseException
+	 */
+	public JSONObject infoGetQuota(PostParameters params) throws FaceppParseException{
 		return request("info", "get_quota", params);
 	}
 
-	public FaceppResult infoGetApp() throws FaceppParseException {
+	public JSONObject infoGetApp() throws FaceppParseException {
 		return request("info", "get_app");
 	}
-	public FaceppResult infoGetApp(PostParameters params) throws FaceppParseException{
+	public JSONObject infoGetApp(PostParameters params) throws FaceppParseException{
 		return request("info", "get_app", params);
 	}
 
