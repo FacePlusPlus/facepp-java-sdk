@@ -331,9 +331,13 @@ public class HttpRequests {
             			result.getString("error"), urlConn.getResponseCode());
             }
             result.put("response_code", urlConn.getResponseCode());
+            urlConn.getInputStream().close();
             return result;
 		} catch (Exception e) {
 			throw new FaceppParseException("error :" + e.toString());
+		} finally {
+			if (urlConn != null)
+				urlConn.disconnect();
 		}
 	}
 	

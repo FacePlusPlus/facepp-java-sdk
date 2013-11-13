@@ -127,3 +127,7 @@ The new FacePP API has been online in 17 Oct. 2013.
 
 	Face-Plus-Plus 2.0 was free right now, and add more new function. This SDK can use the new API now.
 	And, removing FaceppResult class, using JSONObject to instead of it to record the result.
+
+* 2.1.1
+
+	Fix bugs.
