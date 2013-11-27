@@ -447,6 +447,13 @@ public class HttpRequests {
 	public JSONObject detectionDetect(PostParameters params) throws FaceppParseException{
 		return request("detection", "detect", params);
 	}
+	
+	public JSONObject detectionLandmark() throws FaceppParseException {
+		return request("detection", "landmark");
+	}
+	public JSONObject detectionLandmark(PostParameters params) throws FaceppParseException{
+		return request("detection", "landmark", params);
+	}
 
 	public JSONObject trainVerify() throws FaceppParseException {
 		return request("train", "verify");
