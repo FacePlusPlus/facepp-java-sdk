@@ -41,7 +41,7 @@ public class MainActivity extends Activity {
 					System.out.println("FacePlusPlus API Test:");
 					
 					//detection/detect
-					result = httpRequests.detectionDetect(new PostParameters().setUrl("http://cn.faceplusplus.com/wp-content/themes/faceplusplus.zh/assets/img/demo/9.jpg"));
+					result = httpRequests.detectionDetect(new PostParameters().setUrl("http://cn.faceplusplus.com/wp-content/themes/faceplusplus/assets/img/demo/9.jpg"));
 					System.out.println(result);
 					
 					System.out.println(result.getJSONArray("face").getJSONObject(0).getJSONObject("position").getJSONObject("center"));
@@ -64,8 +64,8 @@ public class MainActivity extends Activity {
 					//person/set_info
 					System.out.println("\nperson/set_info");
 					for (int i = 0; i < result.getJSONArray("face").length(); ++i) {
-						new PostParameters().setPersonName("person_"+i).setTag("ÖÐÎÄ tag_"+i).getMultiPart().writeTo(System.out);
-						System.out.println(httpRequests.personSetInfo(new PostParameters().setPersonName("person_"+i).setTag("ÖÐÎÄ tag_"+i)));
+						new PostParameters().setPersonName("person_"+i).setTag("ï¿½ï¿½ï¿½ï¿½ tag_"+i).getMultiPart().writeTo(System.out);
+						System.out.println(httpRequests.personSetInfo(new PostParameters().setPersonName("person_"+i).setTag("ï¿½ï¿½ï¿½ï¿½ tag_"+i)));
 					}
 					
 					//person/get_info
@@ -88,8 +88,8 @@ public class MainActivity extends Activity {
 					//faceset/set_info
 					System.out.println("\nfaceset/set_info");
 					for (int i = 0; i < result.getJSONArray("face").length(); ++i) {
-						new PostParameters().setFacesetName("faceset_"+i).setTag("ÖÐÎÄ tag_"+i).getMultiPart().writeTo(System.out);
-						System.out.println(httpRequests.facesetSetInfo(new PostParameters().setFacesetName("faceset_"+i).setTag("ÖÐÎÄ tag_"+i)));
+						new PostParameters().setFacesetName("faceset_"+i).setTag("ï¿½ï¿½ï¿½ï¿½ tag_"+i).getMultiPart().writeTo(System.out);
+						System.out.println(httpRequests.facesetSetInfo(new PostParameters().setFacesetName("faceset_"+i).setTag("ï¿½ï¿½ï¿½ï¿½ tag_"+i)));
 					}
 					
 					//faceset/get_info
@@ -141,7 +141,7 @@ public class MainActivity extends Activity {
 					//recognition/recognize
 					System.out.println("\nrecognition/identify");
 					System.out.println(httpRequests.recognitionIdentify(
-							new PostParameters().setGroupName("group_0").setUrl("http://cn.faceplusplus.com/wp-content/themes/faceplusplus.zh/assets/img/demo/5.jpg")));
+							new PostParameters().setGroupName("group_0").setUrl("http://cn.faceplusplus.com/wp-content/themes/faceplusplus/assets/img/demo/5.jpg")));
 					
 					//recognition/verify
 					System.out.println("\nrecognition/verify");
