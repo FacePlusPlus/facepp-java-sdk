@@ -24,7 +24,7 @@ public class Test {
 			System.out.println("FacePlusPlus API Test:");
 			
 			//detection/detect
-			result = httpRequests.detectionDetect(new PostParameters().setUrl("http://cn.faceplusplus.com/wp-content/themes/faceplusplus.zh/assets/img/demo/9.jpg"));
+			result = httpRequests.detectionDetect(new PostParameters().setUrl("http://cn.faceplusplus.com/wp-content/themes/faceplusplus/assets/img/demo/9.jpg"));
 			System.out.println(result);
 			
 			System.out.println(result.getJSONArray("face").getJSONObject(0).getJSONObject("position").getJSONObject("center"));
@@ -124,7 +124,7 @@ public class Test {
 			//recognition/recognize
 			System.out.println("\nrecognition/identify");
 			System.out.println(httpRequests.recognitionIdentify(
-					new PostParameters().setGroupName("group_0").setUrl("http://cn.faceplusplus.com/wp-content/themes/faceplusplus.zh/assets/img/demo/5.jpg")));
+					new PostParameters().setGroupName("group_0").setUrl("http://cn.faceplusplus.com/wp-content/themes/faceplusplus/assets/img/demo/5.jpg")));
 			
 			//recognition/verify
 			System.out.println("\nrecognition/verify");
