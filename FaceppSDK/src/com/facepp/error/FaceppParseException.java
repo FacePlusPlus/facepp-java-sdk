@@ -1,5 +1,11 @@
 package com.facepp.error;
 
+/**
+ * exception about faceplusplus sdk
+ * @author moon5ckq
+ * @since 1.0.0
+ * @version 1.0.0
+ */
 public class FaceppParseException extends Exception {
 	
 	private String errorMessage = null;

@@ -17,7 +17,7 @@ import org.apache.http.entity.mime.content.StringBody;
  * {@code new PostParameters().setMode("oneface").setImg(new File("...")).setTag("some message")}
  * @author moon5kcq
  * @since 1.0.0
- * @version 1.1.0
+ * @version 1.3.0
  */
 public class PostParameters {
 	private MultipartEntity multiPart = null;
@@ -43,7 +43,6 @@ public class PostParameters {
 	public MultipartEntity getMultiPart() {
 		return multiPart;
 	}
-
 	
 	/**
 	 * default boundary is auto generate {@link #getBoundary()}
@@ -213,6 +212,36 @@ public class PostParameters {
 	}
 	
 	/**
+	 * faceset_id=...
+	 * @param facesetId
+	 * @return this
+	 */
+	public PostParameters setFacesetId(String facesetId) {
+		addString("faceset_id", facesetId);
+		return this;
+	}
+	
+	/**
+	 * faceset_id=..., ..., ...
+	 * @param facesetIds
+	 * @return this
+	 */
+	public PostParameters setFacesetId(String[] facesetId) {
+		setFacesetId(toStringList(facesetId));
+		return this;
+	}
+	
+	/**
+	 * faceset_id=...
+	 * @param facesetIds
+	 * @return this
+	 */
+	public PostParameters setFacesetId(ArrayList<String> facesetId) {
+		setFacesetId(toStringList(facesetId));
+		return this;
+	}
+	
+	/**
 	 * person_id=...
 	 * @param personId
 	 * @return this
@@ -231,7 +260,7 @@ public class PostParameters {
 		addString("person_name", personName);
 		return this;
 	}
-	
+		
 	/**
 	 * name=...
 	 * @param name
@@ -355,7 +384,42 @@ public class PostParameters {
 		return this;
 	}
 	
+	/**
+	 * faceset_name=...
+	 * @param facesetName
+	 * @return this
+	 */
+	public PostParameters setFacesetName(String facesetName) {
+		addString("faceset_name", facesetName);
+		return this;
+	}
 	
+	/**
+	 * faceset_name=... , ... , ...
+	 * @param facesetNames
+	 * @return this
+	 */
+	public PostParameters setFacesetName(ArrayList<String> facesetNames) {
+		return setFacesetName(toStringList(facesetNames));
+	}
+	/**
+	 * faceset_name=... , ... , ...
+	 * @param facesetNames
+	 * @return this
+	 */
+	public PostParameters setFacesetName(String[] facesetNames) {
+		return setFacesetName(toStringList(facesetNames));
+	}
+	
+	/**
+	 * `attr`=`value`
+	 * @param attr value
+	 * @return this
+	 */
+	public PostParameters addAttribute(String attr, String value) {
+		addString(attr, value);
+		return this;
+	}
 	
 	private void addString(String id, String str) {
 		try {

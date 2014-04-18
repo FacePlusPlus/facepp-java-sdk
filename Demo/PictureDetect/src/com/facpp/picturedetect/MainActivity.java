@@ -2,6 +2,9 @@ package com.facpp.picturedetect;
 
 import java.io.ByteArrayOutputStream;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
@@ -25,7 +28,6 @@ import android.widget.TextView;
 import com.facepp.error.FaceppParseException;
 import com.facepp.http.HttpRequests;
 import com.facepp.http.PostParameters;
-import com.facepp.result.FaceppResult;
 
 /**
  * A simple demo, get a picture form your phone<br />
@@ -72,7 +74,7 @@ public class MainActivity extends Activity {
 				FaceppDetect faceppDetect = new FaceppDetect();
 				faceppDetect.setDetectCallback(new DetectCallback() {
 					
-					public void detectResult(FaceppResult rst) {
+					public void detectResult(JSONObject rst) {
 						//Log.v(TAG, rst.toString());
 						
 						//use the red paint
@@ -88,16 +90,20 @@ public class MainActivity extends Activity {
 						
 						try {
 							//find out all faces
-							final int count = rst.get("face").getCount();
+							final int count = rst.getJSONArray("face").length();
 							for (int i = 0; i < count; ++i) {
 								float x, y, w, h;
 								//get the center point
-								x = (float)rst.get("face").get(i).get("center").get("x").toDouble().doubleValue();
-								y = (float)rst.get("face").get(i).get("center").get("y").toDouble().doubleValue();
+								x = (float)rst.getJSONArray("face").getJSONObject(i)
+										.getJSONObject("position").getJSONObject("center").getDouble("x");
+								y = (float)rst.getJSONArray("face").getJSONObject(i)
+										.getJSONObject("position").getJSONObject("center").getDouble("y");
 
 								//get face size
-								w = (float)rst.get("face").get(i).get("width").toDouble().doubleValue();
-								h = (float)rst.get("face").get(i).get("height").toDouble().doubleValue();
+								w = (float)rst.getJSONArray("face").getJSONObject(i)
+										.getJSONObject("position").getDouble("width");
+								h = (float)rst.getJSONArray("face").getJSONObject(i)
+										.getJSONObject("position").getDouble("height");
 								
 								//change percent value to the real size
 								x = x / 100 * img.getWidth();
@@ -124,9 +130,8 @@ public class MainActivity extends Activity {
 								}
 							});
 							
-						} catch (FaceppParseException e) {
+						} catch (JSONException e) {
 							e.printStackTrace();
-							
 							MainActivity.this.runOnUiThread(new Runnable() {
 								public void run() {
 									textView.setText("Error.");
@@ -198,7 +203,7 @@ public class MainActivity extends Activity {
     		new Thread(new Runnable() {
 				
 				public void run() {
-					HttpRequests httpRequests = new HttpRequests("api_key", "api_secret");
+					HttpRequests httpRequests = new HttpRequests("4480afa9b8b364e30ba03819f3e9eff5", "Pz9VFT8AP3g_Pz8_dz84cRY_bz8_Pz8M", true, false);
 		    		//Log.v(TAG, "image size : " + img.getWidth() + " " + img.getHeight());
 		    		
 		    		ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -214,7 +219,7 @@ public class MainActivity extends Activity {
 		    		
 		    		try {
 		    			//detect
-						FaceppResult result = httpRequests.detectionDetect(new PostParameters().setImg(array));
+						JSONObject result = httpRequests.detectionDetect(new PostParameters().setImg(array));
 						//finished , then call the callback function
 						if (callback != null) {
 							callback.detectResult(result);
@@ -234,6 +239,6 @@ public class MainActivity extends Activity {
     }
 
     interface DetectCallback {
-    	void detectResult(FaceppResult rst);
+    	void detectResult(JSONObject rst);
 	}
 }

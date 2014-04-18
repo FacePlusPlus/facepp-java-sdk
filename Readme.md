@@ -3,9 +3,10 @@
 note: this branch has outdated, for new api please tray to use facepp-v3 branch.
 
 This SDK uses apache.http lib and json lib.
+The new FacePP API has been online in 17 Oct. 2013.
 
 ## 1. Install
-1. download [facepp.jar](http://faceplusplus.com/static/sdk/java/facepp.jar);
+1. download [faceppsdk.jar](https://raw.github.com/FacePlusPlus/facepp-java-sdk/facepp-v3/FaceppSDK/output/faceppsdk.jar);
 2. add it to java project.
 
 ## 2. Import package
@@ -19,10 +20,19 @@ This SDK uses apache.http lib and json lib.
 1. create a com.facepp.http.HttpRequests object
 
 	`HttpRequests httpRequests = new HttpRequests(you_api_key_string, you_api_secret_string);`
+	
+  * use server in china and https:
+	
+	`HttpRequests httpRequests = new HttpRequests(you_api_key_string, you_api_secret_string, true, false);`
 
 2. create a com.facepp.http.PostParameters object with all parameters
 
-	`PostParameters postParameters = new PostParameters().setUrl("http://faceplusplus.com/static/img/demo/8.jpg").setAttribute("all");`
+	```
+	PostParameters postParameters =
+	      new PostParameters()
+	          .setUrl("http://cn.faceplusplus.com/wp-content/themes/faceplusplus.zh/assets/img/demo/9.jpg")
+	          .setAttribute("all");
+	```
 
 3. request
 
@@ -35,16 +45,19 @@ This SDK uses apache.http lib and json lib.
 
 4. get the result use the com.facepp.json.FaceppJson object
 
-	`FaceppResult result = httpRequests.detectionDetect(postParameters);`
+	`JSONObejct result = httpRequests.detectionDetect(postParameters);`
 
 ## 4. Get value from result
 * Example:
 
-	`result.get("face").getCount()`
+	`result.getJSONArray("face").length()`
 
-	`result.get("face").get(0).get("face_id").toString()`
+	`result.getJSONArray("face").getJSONObject(0).getString("face_id")`
 
-	`result.get("face").get(0).get("attribute").get("gender").get("confidence").toDouble()`
+	```
+	result.getJSONArray("face").getJSONObject(0).getJSONObject("attribute")
+	    .getJSONObject("gender").getDouble("confidence")
+	```
 
 ## 5. Debug
 1. View the post request
@@ -107,3 +120,16 @@ This SDK uses apache.http lib and json lib.
 * 1.2.0
 
 	Add https request method, and set it to default. We can use `debug = true` to  open http to instead of https.
+
+* 2.0.0
+
+	Face-Plus-Plus 2.0 has released. This SDK can use the new API now.
+
+* 2.1.0
+
+	Face-Plus-Plus 2.0 was free right now, and add more new function. This SDK can use the new API now.
+	And, removing FaceppResult class, using JSONObject to instead of it to record the result.
+
+* 2.1.1
+
+	Fix bugs.
