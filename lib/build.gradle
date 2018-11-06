@@ -1,0 +1,42 @@
+apply plugin: 'java'
+apply plugin: 'idea'
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile files('libs/fastjson-1.2.31.jar')
+    compile files('libs/okhttp-3.10.0.jar')
+    compile files('libs/okio-1.14.1.jar')
+}
+
+tasks.withType(JavaCompile) {
+    compileTask -> compileTask.dependsOn tasks.findByName('idea')
+}
+
+//
+//version = '1.0'
+//
+//task uberjar(type: Jar) {
+//    from files(sourceSets.main.output.classesDir)
+//    from { configurations.compile.collect { zipTree(it) } } {
+//        exclude "META-INF/*.SF"
+//        exclude "META-INF/*.DSA"
+//        exclude "META-INF/*.RSA"
+//    }
+//
+//    manifest {
+//        attributes 'Main-Class': 'test.api.facepp.com.lib.MainClass'
+//    }
+//}
+
+task fatJar(type: Jar) {
+    classifier = 'facepp_api'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } } {
+        exclude "META-INF/*.SF"
+        exclude "META-INF/*.DSA"
+        exclude "META-INF/*.RSA"
+    }
+    with jar
+}
+
+sourceCompatibility = "1.7"
+targetCompatibility = "1.7"
